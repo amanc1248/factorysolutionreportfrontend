@@ -1,0 +1,127 @@
+.home-page-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-input:focus, .form-select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.generate-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.generate-button:hover {
+  background-color: #0056b3;
+}
+.table-responsive {
+  max-height: 400px; /* Adjust the height as needed */
+  overflow-y: auto;
+}
+
+.report-table th, .report-table td {
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-info {
+  font-size: 18px;
+}
+
+.logout-button {
+  background-color: #ff4b5c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.logout-button:hover {
+  background-color: #ff343a;
+}
+/* Add this CSS to your HomePage.css file or the relevant CSS file for your component */
+.scada-login-button {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  border: none; /* No border */
+  padding: 10px 20px; /* Padding around the text */
+  font-size: 16px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.scada-login-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+.form-check {
+  margin: 5px 0;
+}
+
+.form-check-input {
+  margin-right: 10px;
+}
+.checkbox-container {
+  display: flex; /* Use flexbox layout */
+  flex-wrap: wrap; /* Allow wrapping if needed */
+  gap: 10px; /* Space between checkboxes */
+  margin-top: 10px; /* Space between label and checkboxes */
+}
+
+.form-check-inline {
+  display: flex; /* Align checkbox and label inline */
+  align-items: center; /* Center align checkbox and label */
+}
+
+.form-check-input {
+  margin-right: 5px; /* Space between checkbox and label */
+}
