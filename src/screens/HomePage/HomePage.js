@@ -20,7 +20,6 @@ const HomePage = () => {
     const userId = user?.userId;
     const userName = user?.email; // Assuming 'email' is available in the user object
     const navigate = useNavigate(); // Initialize the useNavigate hook
-    console.log("Usersss: ", user)
     useEffect(() => {
         // Check if the user is logged in or not
         if (user && userName) {

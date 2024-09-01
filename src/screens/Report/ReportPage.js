@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/HomePage/HomePage.css';
 
 const ReportPage = ({ searchCriteria, rows, show, handleClose }) => {
-    const { startDate, endDate, interval, system, selectedColumns } = searchCriteria;
+    const { startDate, endDate, interval, selectedColumns } = searchCriteria;
     const user = JSON.parse(localStorage.getItem('user'));
     const reportHeader = user?.reportHeader;
 
@@ -49,13 +49,20 @@ const ReportPage = ({ searchCriteria, rows, show, handleClose }) => {
         doc.text(formattedStartDate, 14, 65); // Start date
         doc.text(formattedEndDate, 120, 65); // End date
     
+        // Add the interval below the date range
+        doc.setFont("helvetica", "bold");
+        doc.text('Interval:', 14, 75); // Label for interval
+    
+        doc.setFont("helvetica", "normal");
+        doc.text(`${interval} Minutes`, 40, 75); // Display the interval value
+    
         // Line separator
         doc.setDrawColor(150); // Gray color for the line
-        doc.line(10, 70, doc.internal.pageSize.width - 10, 70);
+        doc.line(10, 80, doc.internal.pageSize.width - 10, 80);
     
         // Define table options for better styling
         const tableOptions = {
-            startY: 75, // Adjust the start position based on the header and date range
+            startY: 85, // Adjust the start position based on the header, date range, and interval
             headStyles: {
                 fillColor: [0, 123, 255], // Bootstrap primary color
                 textColor: 255,
@@ -106,7 +113,6 @@ const ReportPage = ({ searchCriteria, rows, show, handleClose }) => {
         doc.save('report.pdf');
     };
     
-    
     const downloadExcel = () => {
         // Prepare data for Excel export based on selected columns
         const excelData = rows.map(row => {
@@ -120,8 +126,9 @@ const ReportPage = ({ searchCriteria, rows, show, handleClose }) => {
         // Create a new worksheet
         const worksheet = XLSX.utils.json_to_sheet([]);
     
-        // Add the report header to the Excel sheet if it exists
         let currentRow = 0;
+    
+        // Add the report header to the Excel sheet if it exists
         if (reportHeader) {
             XLSX.utils.sheet_add_aoa(worksheet, [[reportHeader]], { origin: `A${currentRow + 1}` });
             currentRow += 2; // Leave a space after the header
@@ -137,7 +144,14 @@ const ReportPage = ({ searchCriteria, rows, show, handleClose }) => {
     
         currentRow += 2; // Leave a space after the date range
     
-        // Add the table header and data below the date range
+        // Add the interval information
+        XLSX.utils.sheet_add_aoa(worksheet, [
+            ['Interval:', `${interval} Minutes`]
+        ], { origin: `A${currentRow + 1}` });
+    
+        currentRow += 2; // Leave a space after the interval
+    
+        // Add the table header and data below the interval
         XLSX.utils.sheet_add_json(worksheet, excelData, { origin: `A${currentRow + 1}`, skipHeader: false });
     
         // Create a new workbook and append the worksheet
@@ -145,22 +159,27 @@ const ReportPage = ({ searchCriteria, rows, show, handleClose }) => {
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Report');
     
         // Style the header row
-        const headerRow = worksheet[`${'A' + (currentRow + 1)}`];
-        headerRow.s = {
-            fill: { fgColor: { rgb: "FF007BFF" } }, // Blue background color
-            font: { color: { rgb: "FFFFFFFF" }, bold: true }, // White text color, bold font
-            alignment: { horizontal: "center", vertical: "center" } // Center alignment
-        };
+        const headerRowIndex = currentRow + 1;
+        const headerRange = XLSX.utils.decode_range(worksheet['!ref']);
+        for (let C = headerRange.s.c; C <= headerRange.e.c; C++) {
+            const cellAddress = XLSX.utils.encode_cell({ c: C, r: headerRowIndex });
+            if (!worksheet[cellAddress]) continue; // Skip if cell is not defined
+            worksheet[cellAddress].s = {
+                fill: { fgColor: { rgb: "007BFF" } }, // Blue background color
+                font: { color: { rgb: "FFFFFF" }, bold: true }, // White text color, bold font
+                alignment: { horizontal: "center", vertical: "center" } // Center alignment
+            };
+        }
     
-        // Style the date range cells
-        worksheet[`A${currentRow - 1}`].s = { font: { bold: true } }; // Bold font for labels
-        worksheet[`D${currentRow - 1}`].s = { font: { bold: true } }; // Bold font for labels
+        // Style the date range and interval cells
+        worksheet[`A${currentRow - 3}`].s = { font: { bold: true } }; // Bold font for 'Reporting Period From:'
+        worksheet[`D${currentRow - 3}`].s = { font: { bold: true } }; // Bold font for 'To:'
+        worksheet[`A${currentRow - 1}`].s = { font: { bold: true } }; // Bold font for 'Interval:'
     
         // Save the Excel file
         XLSX.writeFile(workbook, 'report.xlsx');
     };
     
-
     return (
         <Modal show={show} onHide={handleClose} animation={false} centered size='lg'>
             <Modal.Header closeButton>
