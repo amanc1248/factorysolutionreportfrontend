@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/api/*"
+  to = "http://192.168.1.4:8081/:splat" # Your local server address
+  status = 200
