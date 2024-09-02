@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { ip } from '../constants/ipconstants';
 export const generateReport = async (startDate, endDate, interval, system, userId) => {
     try {
-        const response = await axios.post('http://localhost:8081/get-report', {
+        const response = await axios.post(`${ip}/get-report`, {
             startDate,
             endDate,
             interval,

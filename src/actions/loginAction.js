@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { ip } from '../constants/ipconstants';
 export const login = async (email, password,) => {
     try {
-        const response = await axios.post('http://localhost:8081/login', {
+        const response = await axios.post(`${ip}/login`, {
             email, password,
         });
         return response;
